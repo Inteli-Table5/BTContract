@@ -2,6 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { generateLightningContract } = require('./lightningContractGenerator');
+const { deployLightningContract, checkPaymentStatus } = require('./lightingDeployer');
 
 // Inicializar o aplicativo Express
 const app = express();
@@ -9,6 +10,8 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware para processar JSON no corpo das requisições
 app.use(bodyParser.json());
+
+const deployedContracts = new Map();
 
 /**
  * Endpoint para gerar um contrato Lightning Network baseado nos parâmetros do comprador e vendedor
@@ -64,6 +67,95 @@ app.post('/api/generate-lightning-contract', (req, res) => {
     console.error('Erro ao gerar contrato Lightning:', error);
     return res.status(500).json({ 
       error: 'Erro interno ao gerar o contrato Lightning.', 
+      details: error.message 
+    });
+  }
+});
+
+app.post('/api/deploy-contract', async (req, res) => {
+  try {
+    const { contract } = req.body;
+    
+    // Validar que recebemos um contrato válido
+    if (!contract || !contract.id || !contract.parties || !contract.transaction) {
+      return res.status(400).json({ 
+        error: 'Contrato inválido ou incompleto.' 
+      });
+    }
+    
+    // Fazer deploy do contrato na Lightning Network
+    const deployResult = await deployLightningContract(contract);
+    
+    // Armazenar o contrato deployado para consulta posterior
+    deployedContracts.set(contract.id, {
+      ...contract,
+      deployStatus: deployResult.status,
+      paymentRequest: deployResult.paymentRequest,
+      deployedAt: new Date().toISOString()
+    });
+    
+    // Retornar as informações do deploy
+    return res.status(200).json({
+      success: true,
+      contractId: contract.id,
+      paymentRequest: deployResult.paymentRequest, // Este é o invoice Lightning que o comprador deve pagar
+      expiresAt: deployResult.expiresAt,
+      amount: contract.transaction.amount,
+      deployStatus: deployResult.status
+    });
+    
+  } catch (error) {
+    console.error('Erro ao fazer deploy do contrato:', error);
+    return res.status(500).json({ 
+      error: 'Erro interno ao fazer deploy do contrato.', 
+      details: error.message 
+    });
+  }
+});
+
+/**
+ * Endpoint para verificar o status de um contrato deployado
+ */
+app.get('/api/contract-status/:contractId', async (req, res) => {
+  try {
+    const { contractId } = req.params;
+    
+    // Verificar se o contrato existe no nosso registro
+    if (!deployedContracts.has(contractId)) {
+      return res.status(404).json({ 
+        error: 'Contrato não encontrado.' 
+      });
+    }
+    
+    const contract = deployedContracts.get(contractId);
+    
+    // Verificar status do pagamento na Lightning Network
+    const paymentStatus = await checkPaymentStatus(contract);
+    
+    // Atualizar o status do contrato com as novas informações
+    contract.paymentStatus = paymentStatus.status;
+    if (paymentStatus.paidAt) {
+      contract.paidAt = paymentStatus.paidAt;
+    }
+    if (paymentStatus.settledAt) {
+      contract.settledAt = paymentStatus.settledAt;
+    }
+    
+    // Retornar o status atual
+    return res.status(200).json({
+      contractId: contractId,
+      status: paymentStatus.status,
+      paidAt: paymentStatus.paidAt || null,
+      settledAt: paymentStatus.settledAt || null,
+      amount: contract.transaction.amount,
+      seller: contract.parties.seller.nodeId,
+      paymentRequest: contract.paymentRequest
+    });
+    
+  } catch (error) {
+    console.error('Erro ao verificar status do contrato:', error);
+    return res.status(500).json({ 
+      error: 'Erro interno ao verificar status do contrato.', 
       details: error.message 
     });
   }

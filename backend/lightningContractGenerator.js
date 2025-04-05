@@ -62,7 +62,6 @@ function generateLightningContract(params) {
     contract: {
       type: 'HTLC',
       paymentHash: paymentHash,
-      // A preimage será revelada apenas durante a execução
       expirationBlocks: expirationBlocks,
       description: 'Contrato Lightning Network para transferência automática do comprador para o vendedor usando HTLC.'
     },
