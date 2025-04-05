@@ -7,7 +7,8 @@ export function generateSessionToken() {
 }
 
 export async function getSessionFromCookie() {
-  const sessionToken = cookies().get('session_token')?.value;
+  const cookieStore = await cookies(); // Use 'await' para resolver a Promise
+  const sessionToken = cookieStore.get('session_token')?.value;
   
   if (!sessionToken) {
     return null;

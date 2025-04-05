@@ -3,20 +3,20 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 
-// Define o tipo do usuário com base no que você mencionou
+// Tipo do usuário atualizado com os novos campos
 type User = {
   id: string;
   email: string;
   name: string | null;
-  nodeId?: string | null;
-  publicKey?: string | null;
+  nodeId: string | null;
+  publicKey: string | null;
 };
 
 type AuthContextType = {
   user: User | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string, name?: string) => Promise<void>;
+  signup: (email: string, password: string, name?: string, publicKey?: string, nodeId?: string) => Promise<void>;
   logout: () => Promise<void>;
   error: string | null;
 };
@@ -74,7 +74,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const signup = async (email: string, password: string, name?: string) => {
+  const signup = async (
+    email: string, 
+    password: string, 
+    name?: string, 
+    publicKey?: string, 
+    nodeId?: string
+  ) => {
     setError(null);
     setIsLoading(true);
     
@@ -82,7 +88,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, name }),
+        body: JSON.stringify({ 
+          email, 
+          password, 
+          name,
+          publicKey,
+          nodeId 
+        }),
       });
       
       const data = await res.json();

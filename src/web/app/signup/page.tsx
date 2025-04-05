@@ -14,6 +14,8 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [publicKey, setPublicKey] = useState("");
+  const [nodeId, setNodeId] = useState("");
   const [passwordError, setPasswordError] = useState("");
   
   const { signup, isLoading, error } = useAuth();
@@ -29,7 +31,7 @@ export default function Signup() {
     setPasswordError("");
     
     try {
-      await signup(email, password, name);
+      await signup(email, password, name, publicKey, nodeId);
     } catch (err) {
       console.error("Signup failed", err);
       // O erro já é manipulado no contexto
@@ -66,6 +68,30 @@ export default function Signup() {
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
+                className="bg-gray-900 border-gray-800"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="publicKey">Public Key</Label>
+              <Input
+                id="publicKey"
+                type="text"
+                placeholder="Enter your public key"
+                value={publicKey}
+                onChange={(e) => setPublicKey(e.target.value)}
+                required
+                className="bg-gray-900 border-gray-800"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="nodeId">Node ID</Label>
+              <Input
+                id="nodeId"
+                type="text"
+                placeholder="Enter your node ID"
+                value={nodeId}
+                onChange={(e) => setNodeId(e.target.value)}
                 required
                 className="bg-gray-900 border-gray-800"
               />
@@ -114,4 +140,3 @@ export default function Signup() {
     </div>
   );
 }
-
