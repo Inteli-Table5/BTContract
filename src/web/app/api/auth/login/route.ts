@@ -8,6 +8,8 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { email, password } = body;
+    const cookiesInstance = await cookies(); // Resolva a Promise com 'await'
+
 
     if (!email || !password) {
       return NextResponse.json(
@@ -56,7 +58,7 @@ export async function POST(request: Request) {
     });
 
     // Definir cookie de sessão
-    cookies().set('session_token', sessionToken, {
+    cookiesInstance.set('session_token', sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 30 * 24 * 60 * 60, // 30 dias

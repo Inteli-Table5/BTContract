@@ -1,12 +1,19 @@
 // Arquivo: server.js
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { generateLightningContract } = require('./lightningContractGenerator');
 const { deployLightningContract, checkPaymentStatus } = require('./lightingDeployer');
 
 // Inicializar o aplicativo Express
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
+
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+}));
 
 // Middleware para processar JSON no corpo das requisições
 app.use(bodyParser.json());
