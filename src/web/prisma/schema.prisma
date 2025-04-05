@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,18 +11,49 @@ model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   name      String
-  email     String   @unique
+  email     String    @unique
   password  String
   publicKey String?
   nodeId    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   sessions  Session[]
+  contratosBlockchain contratos_blockchain[]
+}
+
+model contratos_blockchain {
+  id              String   @id @default(cuid())
+  contratoId      String   @unique
+  paymentHash     String
+  buyerPublicKey  String
+  buyerNodeId     String
+  sellerPublicKey String
+  sellerNodeId    String
+  amount          Int
+  status          String   @default("pending")
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model contratos {
+  id               String    @id @db.VarChar
+  comprador        String    @db.VarChar
+  vendedor         String    @db.VarChar
+  valor            String    @db.VarChar
+  objeto           String    @db.VarChar
+  data_assinatura  String?   @db.VarChar
+  local_assinatura String?   @db.VarChar
+  observacoes      String?   @db.VarChar
+  clausulas        String?   @db.VarChar
+  ipfs_url         String?   @db.VarChar
+  criado_em        DateTime? @db.Timestamp(6)
 }
