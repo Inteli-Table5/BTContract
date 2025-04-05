@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { FileText, Plus, Eye } from "lucide-react"
+import { FileText, Plus, Eye, Sparkles } from "lucide-react"
 
 export default function Dashboard() {
   // Mock data - would normally come from an API
@@ -39,7 +39,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="border-gray-800 bg-gray-950">
           <CardHeader>
             <CardTitle>My Contracts</CardTitle>
@@ -61,8 +61,27 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <Link href="/contracts/new">
-              <Button variant="outline" className="w-full border-amber-500 text-amber-500 hover:bg-amber-500/10">
-                <Plus className="mr-2 h-4 w-4" /> Create Contract
+              <Button variant="outline" className="w-full border-amber-500 text-amber-500 hover:bg-amber-500/10 mb-4">
+                <Plus className="mr-2 h-4 w-4" /> Create Manually
+              </Button>
+            </Link>
+            <Link href="/ai">
+              <Button variant="outline" className="w-full border-purple-500 text-purple-500 hover:bg-purple-500/10">
+                <Sparkles className="mr-2 h-4 w-4" /> Create with AI Agent
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card className="border-gray-800 bg-gray-950">
+          <CardHeader>
+            <CardTitle>AI Contract Templates</CardTitle>
+            <CardDescription>Pre-built templates for common scenarios</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link href="/contracts/templates">
+              <Button variant="outline" className="w-full border-purple-500 text-purple-500 hover:bg-purple-500/10">
+                <Sparkles className="mr-2 h-4 w-4" /> Browse Templates
               </Button>
             </Link>
           </CardContent>
@@ -125,4 +144,3 @@ export default function Dashboard() {
     </div>
   )
 }
-
