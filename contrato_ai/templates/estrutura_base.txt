@@ -1,0 +1,19 @@
+
+CONTRATO PARTICULAR DE COMPRA E VENDA
+
+Pelo presente instrumento particular, de um lado {{ vendedor }}, e de outro {{ comprador }}, ajustam a compra e venda do bem descrito abaixo:
+
+Objeto da Venda: {{ objeto }}
+Valor: {{ valor }}
+
+{{ clausulas }}
+
+Local e Data: {{ local_assinatura }}, {{ data_assinatura }}
+
+Assinaturas:
+
+_______________________________
+{{ comprador }}
+
+_______________________________
+{{ vendedor }}
