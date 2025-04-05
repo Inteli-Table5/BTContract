@@ -67,8 +67,6 @@ To view existing contracts:
 To create a new contract:
 - Click on "Create new Contract"
 - Choose the type of contract needed:
-  - **Contract of Sale**: Requires Recipient Address, Value, Expiration Date, Percentage, Email of Recipient
-  - **Loan Contract**: Requires Recipient Address, Value, Expiration Date, Percentage, Coletral Effect, Email of Recipient
 - Fill in all required fields for the selected contract type
 - Click "generate contract" to create the contract
 
