@@ -12,9 +12,9 @@ function Home() {
               <Bitcoin className="h-6 w-6 text-yellow-500" />
               <div className="absolute inset-0 rounded-full bg-yellow-500/20 animate-ping opacity-75"></div>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">BitHack</span>
+            <span className="text-xl font-bold bg-gradient-to-r from-yellow-500 to-yellow-500 bg-clip-text text-transparent">BTContract</span>
           </div>
-          
+
           <div className="flex items-center gap-2 sm:gap-4">
             <Link to="/login">
               <Button variant="outline" size="sm" className="border-yellow-500 text-yellow-500 hover:bg-yellow-500/10 text-xs sm:text-sm">
@@ -22,14 +22,14 @@ function Home() {
               </Button>
             </Link>
             <Link to="/login?signup=true">
-              <Button size="sm" className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black text-xs sm:text-sm">
+              <Button size="sm" className="bg-gradient-to-r from-yellow-500 to-yellow-500 hover:from-yellow-600 hover:to-orange-600 text-black text-xs sm:text-sm">
                 Sign Up
               </Button>
             </Link>
           </div>
         </div>
       </header>
-      
+
       <main className="flex-1">
         {/* Hero Section - Modificado para ficar igual à imagem */}
         <section className="w-full py-12 md:py-20 lg:py-24 relative">
@@ -43,21 +43,16 @@ function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Link to="/login?signup=true">
-                  <Button size="lg" className="w-full sm:w-auto gap-1.5 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black">
+                  <Button size="lg" className="w-full sm:w-auto gap-1.5 bg-gradient-to-r from-yellow-500 to-yellow-500 hover:from-yellow-600 hover:to-orange-600 text-black">
                     Get Started
                     <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link to="#features">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto border-yellow-500 text-white hover:bg-yellow-500/10">
-                    Learn More
                   </Button>
                 </Link>
               </div>
             </div>
           </div>
         </section>
-        
+
         {/* Features Section */}
         <section id="features" className="w-full py-12 md:py-24 bg-gradient-to-b from-black to-gray-900/50 relative">
           <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_-200px,#1a1a1a,transparent)]"></div>
@@ -75,7 +70,7 @@ function Home() {
                 </p>
               </div>
             </div>
-            
+
             <div className="mx-auto grid max-w-5xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-12">
               <div className="flex flex-col items-center space-y-4 rounded-lg border border-yellow-500/20 bg-black/50 p-6 hover:border-yellow-500/50 hover:bg-black/70 transition-all">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500/10">
@@ -86,7 +81,7 @@ function Home() {
                   Create custom Bitcoin smart contracts with our intuitive interface
                 </p>
               </div>
-              
+
               <div className="flex flex-col items-center space-y-4 rounded-lg border border-yellow-500/20 bg-black/50 p-6 hover:border-yellow-500/50 hover:bg-black/70 transition-all">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500/10">
                   <Zap className="h-8 w-8 text-yellow-500" />
@@ -96,7 +91,7 @@ function Home() {
                   Deploy your contracts to the Bitcoin network with a single click
                 </p>
               </div>
-              
+
               <div className="flex flex-col items-center space-y-4 rounded-lg border border-yellow-500/20 bg-black/50 p-6 hover:border-yellow-500/50 hover:bg-black/70 transition-all">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500/10">
                   <FileText className="h-8 w-8 text-yellow-500" />
@@ -110,20 +105,6 @@ function Home() {
           </div>
         </section>
       </main>
-      
-      <footer className="w-full border-t border-yellow-500/20 py-6 bg-gradient-to-b from-black to-gray-900">
-        <div className="container flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row px-4">
-          <p className="text-sm text-gray-400">© 2025 BitHack. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <Link to="#" className="text-sm font-medium text-gray-400 hover:text-yellow-500 transition-colors">
-              Terms
-            </Link>
-            <Link to="#" className="text-sm font-medium text-gray-400 hover:text-yellow-500 transition-colors">
-              Privacy
-            </Link>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }

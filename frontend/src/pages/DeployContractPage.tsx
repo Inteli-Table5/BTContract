@@ -9,7 +9,7 @@ export function DeployContractPage() {
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center gap-2">
-        <Link to="/dashboard">
+        <Link to="/dashboard/">
           <Button variant="ghost" size="icon">
             <ArrowLeft className="h-4 w-4" />
           </Button>
@@ -55,9 +55,6 @@ export function DeployContractPage() {
                     readOnly
                     className="flex-1 rounded-md border border-gray-700 bg-gray-700 text-white px-3 py-2"
                   />
-                  <Button variant="outline" size="sm">
-                    Change
-                  </Button>
                 </div>
               </div>
 
@@ -100,9 +97,6 @@ export function DeployContractPage() {
                     readOnly
                     className="flex-1 rounded-md border border-gray-700 bg-gray-700 text-white px-3 py-2"
                   />
-                  <Button variant="outline" size="sm">
-                    Change
-                  </Button>
                 </div>
               </div>
 
@@ -119,8 +113,8 @@ export function DeployContractPage() {
           )}
         </div>
         
-        <div className="p-6 border-t border-gray-700 flex justify-end">
-          <Button>
+        <div className="p-6 border-t border-gray-700 flex">
+          <Button variant="outline" className="hover:bg-gray-100 hover:border-gray-400 transition-colors">
             <Upload className="mr-2 h-4 w-4" />
             Deploy Contract
           </Button>

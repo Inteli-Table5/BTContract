@@ -17,41 +17,49 @@ export function DashboardNav() {
         <div className="flex items-center gap-8">
           <Link to="/" className="flex items-center gap-2">
             <Bitcoin className="h-6 w-6 text-yellow-500" />
-            <span className="text-xl font-bold text-white">BitHack</span>
+            <span className="text-xl font-bold text-white">BTContract</span>
           </Link>
 
           <nav className="hidden md:flex gap-6">
-            <Link to="/dashboard">
+            <Link to="/dashboard/">
               <Button
-                variant={
-                  isActive('/dashboard') &&
-                  !isActive('/dashboard/generate') &&
-                  !isActive('/dashboard/deploy') &&
-                  !isActive('/dashboard/legal')
-                    ? 'default'
-                    : 'ghost'
-                }
+                variant="ghost"
                 size="sm"
-                className="gap-2"
-              >
+                className={`gap-2 ${isActive('/dashboard/')
+                  ? 'bg-purple-600 text-white hover:bg-purple-700'
+                  : 'text-purple-600 hover:bg-purple-100'
+                }`}>
                 <LayoutDashboard className="h-4 w-4" />
                 Dashboard
               </Button>
             </Link>
             <Link to="/dashboard/generate">
-              <Button variant={isActive('/dashboard/generate') ? 'default' : 'ghost'} size="sm" className="gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`gap-2 ${isActive('/dashboard/generate')
+                    ? 'bg-purple-600 text-white hover:bg-purple-700'
+                    : 'text-purple-600 hover:bg-purple-100'
+                  }`}
+              >
                 <Code className="h-4 w-4" />
                 Generate
               </Button>
             </Link>
             <Link to="/dashboard/deploy">
-              <Button variant={isActive('/dashboard/deploy') ? 'default' : 'ghost'} size="sm" className="gap-2">
+              <Button variant={isActive('/dashboard/deploy') ? 'default' : 'ghost'} size="sm" className={`gap-2 ${isActive('/dashboard/deploy')
+                    ? 'bg-purple-600 text-white hover:bg-purple-700'
+                    : 'text-purple-600 hover:bg-purple-100'
+                  }`}>
                 <Upload className="h-4 w-4" />
                 Deploy
               </Button>
             </Link>
             <Link to="/dashboard/legal">
-              <Button variant={isActive('/dashboard/legal') ? 'default' : 'ghost'} size="sm" className="gap-2">
+              <Button variant={isActive('/dashboard/legal') ? 'default' : 'ghost'} size="sm" className={`gap-2 ${isActive('/dashboard/legal')
+                    ? 'bg-purple-600 text-white hover:bg-purple-700'
+                    : 'text-purple-600 hover:bg-purple-100'
+                  }`}>
                 <FileText className="h-4 w-4" />
                 Legal
               </Button>
@@ -61,9 +69,9 @@ export function DashboardNav() {
 
         <div className="flex items-center gap-4">
           <div className="relative">
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               className="rounded-full"
               onClick={() => setIsOpen(!isOpen)}
             >

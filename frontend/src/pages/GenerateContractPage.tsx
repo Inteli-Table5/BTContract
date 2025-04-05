@@ -10,7 +10,7 @@ export function GenerateContractPage() {
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center gap-2">
-        <Link to="/dashboard">
+        <Link to="/dashboard/">
           <Button variant="ghost" size="icon">
             <ArrowLeft className="h-4 w-4" />
           </Button>
@@ -32,30 +32,10 @@ export function GenerateContractPage() {
             >
               Use Template
             </button>
-            <button
-              onClick={() => setActiveTab("custom")}
-              className={`px-4 py-2 font-medium ${activeTab === "custom" ? "text-yellow-500 border-b-2 border-yellow-500" : "text-gray-400"}`}
-            >
-              Custom Contract
-            </button>
           </div>
 
           {activeTab === "template" && (
             <div className="space-y-6 mt-6">
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-300">Contract Type</label>
-                <select
-                  value={contractType}
-                  onChange={(e) => setContractType(e.target.value)}
-                  className="w-full rounded-md border border-gray-700 bg-gray-700 text-white px-3 py-2"
-                >
-                  <option value="multisig">Multi-signature Wallet</option>
-                  <option value="timelock">Time-locked Contract</option>
-                  <option value="escrow">Escrow Service</option>
-                  <option value="oracle">Oracle Contract</option>
-                </select>
-              </div>
-
               {contractType === "multisig" && (
                 <div className="space-y-4">
                   <div className="space-y-2">
@@ -67,58 +47,41 @@ export function GenerateContractPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label htmlFor="required-signatures" className="block text-sm font-medium text-gray-300">Required Signatures</label>
+                    <label htmlFor="recipient-address" className="block text-sm font-medium text-gray-300">Recipient Address</label>
                     <input
-                      id="required-signatures"
-                      type="number"
-                      min="2"
-                      defaultValue="2"
+                      id="recipient-address"
+                      placeholder="Recipient Address"
                       className="w-full rounded-md border border-gray-700 bg-gray-700 text-white px-3 py-2"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label htmlFor="signers" className="block text-sm font-medium text-gray-300">Signers (Public Keys, one per line)</label>
-                    <textarea
-                      id="signers"
-                      placeholder="Public key 1\nPublic key 2\nPublic key 3"
-                      className="w-full rounded-md border border-gray-700 bg-gray-700 text-white px-3 py-2 min-h-[120px]"
+                    <label htmlFor="value" className="block text-sm font-medium text-gray-300">Value</label>
+                    <input
+                      id="value"
+                      placeholder="0.01 BTC"
+                      className="w-full rounded-md border border-gray-700 bg-gray-700 text-white px-3 py-2"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="percentage" className="block text-sm font-medium text-gray-300">Percentage</label>
+                    <input
+                      id="percentage"
+                      placeholder="50%"
+                      className="w-full rounded-md border border-gray-700 bg-gray-700 text-white px-3 py-2"
                     />
                   </div>
                 </div>
               )}
-
-              {/* Other contract types would follow the same pattern */}
-            </div>
-          )}
-
-          {activeTab === "custom" && (
-            <div className="space-y-4 mt-6">
-              <div className="space-y-2">
-                <label htmlFor="contract-name" className="block text-sm font-medium text-gray-300">Contract Name</label>
-                <input
-                  id="contract-name"
-                  placeholder="My Custom Contract"
-                  className="w-full rounded-md border border-gray-700 bg-gray-700 text-white px-3 py-2"
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="contract-code" className="block text-sm font-medium text-gray-300">Contract Code</label>
-                <textarea
-                  id="contract-code"
-                  placeholder="// Write your custom Bitcoin script here"
-                  className="w-full rounded-md border border-gray-700 bg-gray-700 text-white px-3 py-2 font-mono min-h-[300px]"
-                />
-              </div>
             </div>
           )}
         </div>
         
-        <div className="p-6 border-t border-gray-700 flex justify-between">
-          <Button variant="outline">
+        <div className="p-6 border-t border-gray-700 flex justify-start gap-x-4">
+          <Button variant="outline" className="hover:bg-gray-100 hover:border-gray-400 transition-colors">
             <Save className="mr-2 h-4 w-4" />
             Save Draft
           </Button>
-          <Button>Generate Contract</Button>
+          <Button variant="outline" className="hover:bg-gray-100 hover:border-gray-400 transition-colors">Generate Contract</Button>
         </div>
       </div>
     </div>
