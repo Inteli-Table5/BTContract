@@ -9,6 +9,8 @@ from app.db.database import SessionLocal
 from app.db.models import Contrato
 from fastapi import Depends
 from sqlalchemy.orm import Session
+from fastapi.responses import RedirectResponse, StreamingResponse
+import requests
 
 router = APIRouter()
 
@@ -42,3 +44,26 @@ def obter_contrato(id: str, db: Session = Depends(get_db)):
     if contrato is None:
         return {"erro": "Contrato não encontrado"}
     return contrato
+
+@router.get("/contratos/{id}/visualizar")
+def visualizar_pdf_ipfs(id: str, db: Session = Depends(get_db)):
+    contrato = db.query(Contrato).filter(Contrato.id == id).first()
+    if not contrato or not contrato.ipfs_url:
+        return {"erro": "Contrato ou IPFS URL não encontrada"}
+    return RedirectResponse(url=contrato.ipfs_url)
+
+@router.get("/contratos/{id}/download")
+def baixar_pdf_ipfs(id: str, db: Session = Depends(get_db)):
+    contrato = db.query(Contrato).filter(Contrato.id == id).first()
+    if not contrato or not contrato.ipfs_url:
+        return {"erro": "Contrato ou IPFS URL não encontrada"}
+
+    response = requests.get(contrato.ipfs_url, stream=True)
+    if response.status_code != 200:
+        return {"erro": "Falha ao baixar o arquivo do IPFS"}
+
+    return StreamingResponse(
+        response.iter_content(chunk_size=1024),
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename=contrato-{id}.pdf"}
+    )

@@ -16,4 +16,5 @@ class Contrato(Base):
     local_assinatura = Column(String)
     observacoes = Column(String)
     clausulas = Column(String)
+    ipfs_url = Column(String)  
     criado_em = Column(DateTime, default=datetime.utcnow)
