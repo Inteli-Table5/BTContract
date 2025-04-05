@@ -183,7 +183,7 @@ export default function ContractDetails({ params }: { params: { id: string } }) 
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="animate-pulse text-amber-500">Carregando detalhes do contrato...</div>
+        <div className="animate-pulse text-amber-500">Loading contract details...</div>
       </div>
     )
   }
@@ -370,14 +370,16 @@ export default function ContractDetails({ params }: { params: { id: string } }) 
               <CardDescription>Available contract actions</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button className="w-full bg-amber-500 text-black hover:bg-amber-600">
-                <FileText className="mr-2 h-4 w-4" />
-                Export Contract
-              </Button>
-              <Button variant="outline" className="w-full border-amber-500 text-amber-500 hover:bg-amber-500/10">
-                <ExternalLink className="mr-2 h-4 w-4" />
-                View on Explorer
-              </Button>
+            <a href="https://gateway.pinata.cloud/ipfs/QmTcKpRUFYptEvvooWkXbD3QjRY3a8K4pnFNrod8sNDbAY" download>
+                <Button className="w-full bg-amber-500 text-black hover:bg-amber-600">
+                  <FileText className="mr-2 h-4 w-4" />
+                  Export Contract
+                </Button>
+            </a>
+                <Button variant="outline" className="w-full border-amber-500 text-amber-500 hover:bg-amber-500/10">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  View on Explorer
+                </Button>
             </CardContent>
           </Card>
         </div>

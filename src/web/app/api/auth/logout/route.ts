@@ -5,7 +5,8 @@ import { getSessionFromCookie } from '@/lib/auth';
 
 export async function POST() {
   try {
-    const sessionToken = cookies().get('session_token')?.value;
+    const cookiesInstance = await cookies(); // Use 'await' para resolver a Promise
+    const sessionToken = cookiesInstance.get('session_token')?.value;
     
     if (sessionToken) {
       // Remover sessão do banco de dados
@@ -14,7 +15,7 @@ export async function POST() {
       });
       
       // Limpar cookie
-      cookies().delete('session_token');
+      cookiesInstance.delete('session_token'); // Use o objeto resolvido para deletar o cookie
     }
     
     return NextResponse.json({ message: 'Logged out successfully' });

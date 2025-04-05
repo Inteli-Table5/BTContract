@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
@@ -11,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FileText, CreditCard } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useAuth } from "@/contexts/auth-context"
 
 export default function NewContract() {
   const router = useRouter()
@@ -75,48 +74,104 @@ export default function NewContract() {
 
 function SimpleSaleForm() {
   const router = useRouter()
+  const { user } = useAuth()
   const [sellerNodeId, setSellerNodeId] = useState("")
   const [sellerPublicKey, setSellerPublicKey] = useState("")
   const [amount, setAmount] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
 
     // Validação básica
     if (!sellerNodeId || !sellerPublicKey || !amount) {
-      setError("Por favor, preencha todos os campos")
+      setError("Please fill in all fields")
+      return
+    }
+
+    // Verificar se temos os dados do comprador (usuário logado)
+    if (!user?.publicKey || !user?.nodeId) {
+      setError("User authentication data is missing. Please log in again.")
       return
     }
 
     setLoading(true)
 
-    // Em um ambiente real, aqui faríamos uma chamada API para criar o contrato
-    // Por enquanto, vamos simular e passar os dados via query params
-    setTimeout(() => {
-      // Codificar os dados para passar via URL (em produção, seria melhor usar um estado global ou API)
-      const contractData = {
-        sellerNodeId,
-        sellerPublicKey,
-        amount: Number(amount),
+    try {
+      // 1. Gerar o contrato Lightning
+      const generateResponse = await fetch('http://localhost:3001/api/generate-lightning-contract', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          buyerPublicKey: user.publicKey,
+          buyerNodeId: user.nodeId,
+          sellerPublicKey,
+          sellerNodeId,
+          amount: Number(amount)
+        }),
+      })
+
+      if (!generateResponse.ok) {
+        const errorData = await generateResponse.json()
+        throw new Error(errorData.error || 'Failed to generate contract')
       }
 
-      // Gerar um ID único para o contrato (em produção, isso viria do backend)
-      const contractId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+      const { contract } = await generateResponse.json()
 
-      // Armazenar os dados temporariamente no localStorage (simulando um backend)
-      localStorage.setItem(`contract_${contractId}`, JSON.stringify(contractData))
+      // 2. Fazer deploy do contrato
+      const deployResponse = await fetch('http://localhost:3001/api/deploy-contract', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ contract }),
+      })
 
-      // Navegar para a página de preview com o ID do contrato
-      router.push(`/contracts/preview/${contractId}`)
-    }, 1000)
+      if (!deployResponse.ok) {
+        const errorData = await deployResponse.json()
+        throw new Error(errorData.error || 'Failed to deploy contract')
+      }
+
+      const deployData = await deployResponse.json()
+
+      // 3. Armazenar localmente para referência
+      localStorage.setItem(`contract_${contract.id}`, JSON.stringify({
+        ...contract,
+        paymentRequest: deployData.paymentRequest,
+        deployStatus: deployData.deployStatus
+      }))
+
+      // 4. Navegar para a página de preview com o ID do contrato
+      router.push(`/contracts/preview/${contract.id}`)
+
+    } catch (err) {
+      console.error('Contract creation error:', err)
+      setError(err instanceof Error ? err.message : 'Failed to create contract')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && <div className="bg-red-900/50 border border-red-700 text-red-200 px-4 py-2 rounded-md">{error}</div>}
+
+      {/* Seção mostrando as informações do comprador (usuário logado) */}
+      <div className="space-y-2">
+        <Label>Your Information (Buyer)</Label>
+        <div className="p-4 bg-gray-900 rounded-md border border-gray-800">
+          <p className="text-sm text-gray-300">
+            <span className="font-semibold">Public Key:</span> {user?.publicKey || 'Not available'}
+          </p>
+          <p className="text-sm text-gray-300 mt-2">
+            <span className="font-semibold">Node ID:</span> {user?.nodeId || 'Not available'}
+          </p>
+        </div>
+      </div>
 
       <div className="space-y-2">
         <Label htmlFor="sellerNodeId">Seller Node ID</Label>
@@ -160,6 +215,7 @@ function SimpleSaleForm() {
           className="bg-gray-900 border-gray-800"
           placeholder="Enter the amount in satoshis"
           required
+          min="1"
         />
         {amount && (
           <p className="text-sm text-gray-400">Approximately {(Number.parseInt(amount) / 100000000).toFixed(8)} BTC</p>
@@ -172,4 +228,3 @@ function SimpleSaleForm() {
     </form>
   )
 }
-
