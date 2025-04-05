@@ -16,14 +16,23 @@ router = APIRouter()
 
 @router.post("/gerar-contrato")
 async def gerar_contrato(dados: ContratoInput):
-    nome_arquivo = f"contrato_{uuid.uuid4().hex}.pdf"
-    caminho = await gerar_contrato_pdf(dados.dict(), nome_arquivo)
+    try:
+        nome_arquivo = f"contrato_{uuid.uuid4().hex}.pdf"
+        ipfs_url = await gerar_contrato_pdf(dados.dict(), nome_arquivo)
 
-    if not caminho or not os.path.exists(caminho):
-        raise HTTPException(status_code=500, detail="Falha ao gerar o PDF.")
+        if not ipfs_url:
+            raise HTTPException(status_code=500, detail="Falha ao gerar o PDF.")
 
-    return FileResponse(path=caminho, filename=nome_arquivo, media_type='application/pdf')
+        return {
+            "message": "Contrato gerado com sucesso.",
+            "ipfs_url": ipfs_url
+        }
 
+    except Exception as e:
+        print("❌ Erro ao gerar contrato:", e)
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    
 def get_db():
     db = SessionLocal()
     try:

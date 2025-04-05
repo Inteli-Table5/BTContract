@@ -32,20 +32,29 @@ def upload_para_ipfs(caminho_pdf: str, nome_arquivo: str) -> str:
 
 def upload_pdf_bytes_to_ipfs(pdf_bytes: bytes, nome_arquivo: str) -> str:
     url = "https://api.pinata.cloud/pinning/pinFileToIPFS"
+    
+    if not PINATA_API_KEY or not PINATA_SECRET_API_KEY:
+        raise Exception("🔐 Credenciais do Pinata não configuradas corretamente no .env")
+    
     headers = {
-        "pinata_api_key": os.getenv("PINATA_API_KEY"),
-        "pinata_secret_api_key": os.getenv("PINATA_SECRET_API_KEY")
+        "pinata_api_key": PINATA_API_KEY,
+        "pinata_secret_api_key": PINATA_SECRET_API_KEY
     }
 
     files = {
         "file": (nome_arquivo, pdf_bytes, "application/pdf")
     }
 
-    response = requests.post(url, files=files, headers=headers)
+    try:
+        response = requests.post(url, files=files, headers=headers)
+        response.raise_for_status()
 
-    if response.status_code == 200:
         ipfs_hash = response.json()["IpfsHash"]
-        return f"https://gateway.pinata.cloud/ipfs/{ipfs_hash}"
-    else:
-        print("Erro ao subir para IPFS:", response.text)
-        return None
+        ipfs_url = f"https://gateway.pinata.cloud/ipfs/{ipfs_hash}"
+        print(f"📡 Upload bem-sucedido: {ipfs_url}")
+        return ipfs_url
+
+    except requests.exceptions.RequestException as e:
+        print("❌ Erro ao subir PDF para IPFS:", e)
+        print("📥 Resposta completa:", response.text if response else "sem resposta")
+        raise Exception("Falha ao subir PDF para o IPFS.")
