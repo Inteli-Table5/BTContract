@@ -1,19 +1,18 @@
+PRIVATE PURCHASE AGREEMENT
 
-CONTRATO PARTICULAR DE COMPRA E VENDA
+This Agreement is made between {{ vendedor }} (Seller) and {{ comprador }} (Buyer).
 
-Pelo presente instrumento particular, de um lado {{ vendedor }}, e de outro {{ comprador }}, ajustam a compra e venda do bem descrito abaixo:
-
-Objeto da Venda: {{ objeto }}
-Valor: {{ valor }}
+Item Sold: {{ objeto }}  
+Total Value: {{ valor }}
 
 {{ clausulas }}
 
-Local e Data: {{ local_assinatura }}, {{ data_assinatura }}
+Signed in {{ local_assinatura }} on {{ data_assinatura }}
 
-Assinaturas:
+Signatures:
 
-_______________________________
-{{ comprador }}
+_______________________________  
+{{ comprador }} (Buyer)
 
-_______________________________
-{{ vendedor }}
+_______________________________  
+{{ vendedor }} (Seller)
