@@ -5,6 +5,10 @@ from app.models.contrato import ContratoInput
 from app.services.contrato_service import gerar_contrato_pdf
 import uuid
 import os
+from app.db.database import SessionLocal
+from app.db.models import Contrato
+from fastapi import Depends
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 
@@ -17,3 +21,24 @@ async def gerar_contrato(dados: ContratoInput):
         raise HTTPException(status_code=500, detail="Falha ao gerar o PDF.")
 
     return FileResponse(path=caminho, filename=nome_arquivo, media_type='application/pdf')
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+@router.get("/contratos")
+def listar_contratos(db: Session = Depends(get_db)):
+    contratos = db.query(Contrato).all()
+    return contratos
+
+
+@router.get("/contratos/{id}")
+def obter_contrato(id: str, db: Session = Depends(get_db)):
+    contrato = db.query(Contrato).filter(Contrato.id == id).first()
+    if contrato is None:
+        return {"erro": "Contrato não encontrado"}
+    return contrato
