@@ -3,13 +3,13 @@
 ![logo](./btcontract.png)
 
 ## Introduction
-BTContract simplifies smart contract creation on the Bitcoin network, allowing anyone to make loans and purchases without needing technical knowledge. With built-in Lightning Network support, it enables fast, low-cost transactions, making decentralized finance more accessible worldwide.
+BTContract is a platform designed to abstract the process of creating smart contracts and democratize access to this feature within the Bitcoin network. It enables users without advanced knowledge of programming or blockchain—who are interested in establishing financial contracts on the Bitcoin network—to carry out loans and purchases through an intuitive interface that eliminates the complexity of Bitcoin Script. Furthermore, the platform's native integration with the Lightning Network enables low-cost transactions with near-instant liquidity and scalability for everyday applications. In doing so, it fosters access to the decentralized economy and promotes global financial inclusion.
 
 ## Features
 - Smart Contracts Builder
-- Integration with the Lightning Network
-- Reusable Contract Templates
-- Contract History
+- Integração com a Lightning Network 
+- Templates de Contratos Reutilizáveis
+- Histórico de Contratos 
 
 ## Instalação 
 ### Back-end e Blockchain
@@ -181,11 +181,9 @@ After generating the contract:
 - Automated deployment and recipient notification
 
 ## Roadmap
-Planejamos implementar outras funcionalidades ao pensar no projeto a longo prazo, sendo elas:
-- Criação de match-making com IA entre empresas interessadas e candidatos;
-- Criação de programas B2B de capacitação para colaboradores de empresas parceiras;
-- Desenvolvimento de trilhas educacionais e técnicas voltadas para negócios e criptoativos;
-- Desenvolvimento de projetos mensais entre empresas e alunos da plataforma;
+- Mobile application​
+- Implementation of new contract templates​
+- Educational platform to assist the user
 
-## Agradecimentos
-Um agradecimento especial à equipes de organização do Modular Carnival e a Arbitrum e Scroll pela oportunidade. 
+## Greetings
+A special thanks to the MIT Bitcoin Hackathon organizing team for the opportunity.
