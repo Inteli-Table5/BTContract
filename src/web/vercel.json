@@ -8,10 +8,7 @@
         "config": {
           "installCommand": "npm install --legacy-peer-deps",
           "buildCommand": "prisma generate && npm run build"
-        },
-        "rewrites": [
-        {"source": "/(.*)", "destination": "/"}
-    ]
+        }
       }
     ]
   }
